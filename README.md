@@ -1,23 +1,41 @@
 # collective-access
 CONTENTS
 1	Install Instructions	1
+
 1.1	Providence Install	1
+
 1.2	Pawtucket Install:	2
+
 2	Collective Access (Backend) Media and Data Importing	2
+
 2.1	Data Importing: Mapping	2
+
 2.2	Data Importing: Run Import	3
+
 2.3	Media Importing: Import Media	3
+
 2.4	Batch Metadata Editing	3
+
 3	Pawtucket Customization: Default Theme	4
+
 Note: This Section Assumes that the Pawtucket Section has been named “Carteles”	4
+
 3.1	How to make a gallery	4
+
 3.2	How to Change Site Logo	4
+
 3.3	Add More Facets to Browse	4
+
 3.4	Add More Search Terms to Search	4
+
 3.5	Display More Metadata on Item Page	5
+
 3.6	Change Information on “About” Page	5
+
 3.7	Change Text on Front/Home Page	5
+
 3.8	Ensure Localhost doesn’t display folders in var/www/html	5
+
 3.9	Redirect Localhost to Pawtucket	5
 
  
@@ -31,118 +49,231 @@ NOTE:  Command Line instructions are denoted by this font style
 1.	Download providence and pawtucket files from collectiveaccess.org/download
 
 a.	Note: Pawtucket is only necessary if you want a front end system.  If you do not only install Providence
+
 b.	Make sure you have compatible versions, this report details the use of Providence 1.6 working with Pawtucket2
+
 2.	Install LAMP stack; From the command line of the Ubuntu computer, enter the following commands:
+
 a.	sudo apt-get install apache2 
+
 b.	sudo apt-get install mysql-server
+
 i.	the computer will prompt you to enter a password here, make sure to remember the password
+
 c.	sudo apt-get install php libapache2-mod-php php-mcrypt php-mysql libapache2-mod-auth-mysql
+
 d.	sudo apt-get install php-curl
+
 e.	sudo apt-get install php7.0-zip
+
 f.	sudo apt-get install imagemagick
+
 3.	create mysql database (password created upon install); this again is performed in the command line interface
+
 a.	mysql -u root –p 
+
 i.	enter password from step 2b
+
 ii.	the next steps are preformed in mysql’s command line
+
 b.	create database ca;
+
 c.	grant all on ca.* to ‘user’@‘localhost’ identified by ‘password’;
+
 d.	flush privileges;
+
 e.	exit;
+
 4.	unzip providence folder and then copy providence folder to /var/www/html.
+
 a.	sudo cp /path/of/providencefolder /var/www/html/namewished 
+
 5.	change the setup.php-dist file so it has the information of the database created (do this to the providence folder copied into /var/www/html)
+
 a.	sudo cp setup.php-dist setup.php 
+
 b.	open setup.php
+
 c.	change the user, password, and database fields to match the sql database
+
 i.	an example: in the file the lines needing to be changed have this format:
+
 define("__CA_DB_USER__", 'my_database_user');
+
 only change 'my_database_user' to the user you defined in step 3c
+
 6.	Change privileges on providence folder
+
 a.	sudo chown -R www-data:www-data /var/www/html/providencefolder
+
 i.	This allows these folders to be web-writable
+
 7.	in the browser navigate to localhost/providencefoldername/install
+
 8.	Follow the install instructions, at the end of install the computer will provide the user with a password and username. IMPORTANT: record these.
+
 1.2	PAWTUCKET INSTALL:
+
 1.	Unzip pawtucket folder and then copy pawtucket folder to /var/www/html.
+
 a.	sudo cp /path/of/pawtucketfolder /var/www/html/namewished
+
 2.	change the setup.php-dist file so it has the information of the database created (do this in both the pawtucket folder copied into /var/www/html)
+
 a.	sudo cp setup.php-dist setup.php 
+
 b.	open setup.php
+
 c.	change the user, password, and database fields to match the sql database
+
 i.	an example: in the file the lines needing to be changed have this format:
+
 define("__CA_DB_USER__", 'my_database_user');
+
 only change 'my_database_user' to the user you defined in step 3c
+
 3.	Change privileges on pawtucket folder
+
 a.	sudo chown -R www-data:www-data /var/www/html/providencefolder 
+
 4.	Create Symbolic link to providence’s media folder
+
 a.	sudo ln –s /var/www/html/providencefolder/media /var/www/html/pawtucketfolder
+
 5.	Navigate to localhost/Pawtucketfolder
+
 2	COLLECTIVE ACCESS (BACKEND) MEDIA AND DATA IMPORTING
+
 2.1	DATA IMPORTING: MAPPING
+
 Note: In these instructions, ca stands for the providence system we previously installed.  So localhost/ca is the providence system being accessed
+
 1.	Number columns sequentially in spreadsheet which contains all the metadata of the objects.
+
 2.	Use Data Import Template as base for mapping
+
 a.	Located here: http://docs.collectiveaccess.org/wiki/File:Data_Import_Mapping_template.xlsx
+
 3.	Source = number of column in ingest spreadsheet
+
 4.	ca table element = collective access metadata tag to be mapped to; can be found here: http://localhost/ca/index.php/administrate/setup/Elements/Index
+
 a.	also located by going to the manage menu and clicking on administration
+
 5.	If metadata element needed does not exist, create your own:
+
 a.	click new at the top of metadata elements page
+
 i.	(http://localhost/ca/index.php/administrate/setup/Elements/Index)
+
 b.	enter name, element code, datatype (recommend text)
+
 c.	click add type restriction
+
 i.	 bind attribute to desired type (i.e. Object, Film & Media)
+
 d.	Save
+
 e.	Click on the user interfaces tab; located at http://localhost/ca/index.php/administrate/setup/Interfaces/ListUIs
+
 i.	click on the edit button (black page) that goes with the restrictions placed on the new metadata element
+
 1.	for example if you bound the new metadata element to an object, go to the standard object editor
+
 ii.	Click on basic info (located under screens) using the edit button(black page)
+
 1.	Drag new metadata element from the ‘available editor elements’ to ‘elements to display’
+
 f.	save
+
 6.	map to the element code of the metadata element; do for all columns desired
+
 7.	Change settings elements; the description elements for name and code make the changing somewhat self explanatory, they just to need to be changed to arbitrary text, there is not specific text that needs to be entered
+
 8.	Table need to be changed to the correct element.  If you have the mapping importing to objects, the table setting should be ca_objects
+
 9.	Same is said for type, these need to be changed to correctly identify the type of the table element. For example, if you are mapping to objects, the type can be film_media.
+
 10.	Input format need to be changed to the format of the spreadsheet you are importing.  (xlsx, xls, etc.)
+
 Note: Included should be an example mapping
+
 2.2	DATA IMPORTING: RUN IMPORT
+
 1.  to import metadata, click on import > data
+
 2.  grab the data import mapping sheet you completed and drag the worksheet to where it says ‘drag importer worksheet here to add or update”
+
 3.  allow for upload, then click on the import data button (three boxes with lines)
+
 4.  upload inventory with the browse button, highlight the excel sheet, hit open
+
 5.  click execute data importer
+
 2.3	MEDIA IMPORTING: IMPORT MEDIA
+
 1.	Make sure file names include the object id
+
 2.	click import>media
+
 3.	choose folder with images, and target (most often objects)
+
 4.	import mode: “import only media that can be matched with existing records”
+
 5.	type: match to imported metadata
+
 6.	choose set
+
 7.	set object identifier to file name
+
 8.	execute media import
+
 2.4	BATCH METADATA EDITING
+
 1.	On the side bar of any of the elements (find > element) there should be a button called “set tools”, click on it
+
 2.	Check desired records
+
 3.	Click on the box named “open set for batch editing,” then click “create set”
+
 4.	Edit
+
 5.	Click “execute batch edit”
+
 Note:  to delete all record in the set, instead click on more options under the batch editing, then delete all records in set
 
+
+
 3	PAWTUCKET CUSTOMIZATION: DEFAULT THEME
+
 NOTE: THIS SECTION ASSUMES THAT THE PAWTUCKET SECTION HAS BEEN NAMED “CARTELES”; IN ORDER TO ACTUALLY EDIT THE FILES WITHIN THE GRAPHICAL INTERFACE ENTER THE FOLLOWING COMMAND INTO THE TERMINAL:
+
 gksudo gedit filepath/of/filetoopen, 
+
 i.e. gksudo gedit /var/www/html/cartels/themes/default/conf/browse.conf
+
 3.1	HOW TO MAKE A GALLERY
+
 1.	go to manage > my sets
+
 2.	create a set
+
 3.	add images
+
 4.	will automatically appear on front end
+
 3.2	HOW TO CHANGE SITE LOGO
+
 1.	go to /var/www/html/cartels/themes/default/assets/pawtucket/graphics
+
 2.	copy logo into that folder with the name ca_nav_logo300.png and rename to the old photo with that name
+
 3.3	ADD MORE FACETS TO BROWSE
+
 1.	go to /var/www/html/cartels/themes/default/conf/browse.conf
+
 2.	under ca_objects = {  facets = {  copy this code 
+
 
 director_facet = {
 type = attribute,
@@ -154,37 +285,69 @@ description = _("Find objects according to associated director."),
 	},
 
 3.	change all text that says director to the correct facet name, make sure that the element_code matchs the element code for that facet that can be found in Manage>Administration>Metadata Elements
+
 3.4	ADD MORE SEARCH TERMS TO SEARCH
+
 1.	go to /var/www/html/cartels/themes/default/views/Search/ca_objects_advanced_search_objects_html.php
+
 2.	add this underneath {{{form}}}: 
+
 a.	<div class="advancedSearchField"> Director <br/> {{{ca_objects.director%width=200px&height=20px}}} </div>
+
 b.	Replace director with correct facet name, make sure that the element_code matchs the element code for that facet that can be found in Manage>Administration>Metadata Elements
+
 3.5	DISPLAY MORE METADATA ON ITEM PAGE
+
 1.	Go to /var/www/html/cartels/themes/default/views/Details/ca_objects_default_html.php
+
 2.	Under <<div class='col-sm-6 col-md-6 col-lg-5'>
+
 a.	{{{<ifdef code ="ca_objects.director"><H6>Director:</H6>^ca_objects.director<br/></ifdef>}}}
+
 3.	Text between <H6></H6> is display facet, ca_objects.director is the element code mapping, change element code to correct facet; change display facet to correct name
+
 3.6	CHANGE INFORMATION ON “ABOUT” PAGE
+
 1.  Go to /var/www/html/cartels/themes/default/views/About/Index.php
+
 2.  Change the text to properly reflect your archive
 
+
+
 3.7	CHANGE TEXT ON FRONT/HOME PAGE
+
 1.	Go to /var/www/html/cartels/themes/default/views/Front/front_page_html.php
+
 2.	Change the text to properly reflect your archive
 
+
+
 3.8	ENSURE LOCALHOST DOESN’T DISPLAY FOLDERS IN VAR/WWW/HTML
+
 1.	Go to /etc/apache2
+
 2.	edit apache2.conf
+
 3.	go to the line <Directory var/www>
+
 4.	change the line “Options Indexes FollowSymLinks” to “Options FollowSymLinks”
+
 5.	save and exit
+
 6.	Now localhost will display something that says no access allowed
+
 3.9	REDIRECT LOCALHOST TO PAWTUCKET
+
 1.	Create a index.html file with the following contents
+
 a.	<html>
+
 <head><meta http-equiv=”refresh” content=“0; URL=’/carteles’” />
+
 </head>
+
 </html>
+
 2.	Add the file to var/www/html
 
 
