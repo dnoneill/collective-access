@@ -23,9 +23,13 @@ Note: This Section Assumes that the Pawtucket Section has been named “Carteles
  
 Collective Access Install and Customization
 1	INSTALL INSTRUCTIONS
+
 NOTE:  Command Line instructions are denoted by this font style 
+
 1.1	PROVIDENCE INSTALL
+
 1.	Download providence and pawtucket files from collectiveaccess.org/download
+
 a.	Note: Pawtucket is only necessary if you want a front end system.  If you do not only install Providence
 b.	Make sure you have compatible versions, this report details the use of Providence 1.6 working with Pawtucket2
 2.	Install LAMP stack; From the command line of the Ubuntu computer, enter the following commands:
